@@ -47,7 +47,8 @@ import numpy as np
 import pandas as pd
 import time
 import matplotlib.pyplot as plt
-from typing import List, Dict
+from typing import Dict, List
+from utility.utility import calculate_obj_function
 
 
 # --- Constraint Projection Function (Simplex Projection) ---
@@ -89,18 +90,18 @@ def solve_with_conjugate_gradient(Q_solver: np.ndarray, c: np.ndarray, weight_na
     print("="*80)
 
     print(f"--- Initial Setup ---")
-    print(f"  > Initial Objective (Min g(w)): {0.5 * w.T @ Q_solver @ w - c.T @ w:.6f}")
+    print(f"  > Initial Objective (Min g(w)): {calculate_obj_function(Q_solver, c, w):.6f}")
     print(f"  > Initial Weights: {', '.join([f'{name}: {w_val:.4f}' for name, w_val in zip(weight_names, w)])}")
 
     history.append({
         'iteration':  0,
-        'objective_value': 0.5 * w.T @ Q_solver @ w - c.T @ w,
+        'objective_value': calculate_obj_function(Q_solver, c, w),
         'step_change': 0,
         'weights': w.copy()
     })
     for iteration in range(max_iter):
         # --- Store Iteration History ---
-        obj_val = 0.5 * w.T @ Q_solver @ w - c.T @ w
+        obj_val = calculate_obj_function(Q_solver, c, w)
         
         # --- Step 1: Calculate Optimal Step Size (alpha) ---
         d_Q_d = d.T @ Q_solver @ d
@@ -147,7 +148,7 @@ def solve_with_conjugate_gradient(Q_solver: np.ndarray, c: np.ndarray, weight_na
     print(f"[INFO] Final Sum of Weights: {np.sum(w)}")
     print("="*80)
 
-    final_obj = 0.5 * w.T @ Q_solver @ w - c.T @ w
+    final_obj = calculate_obj_function(Q_solver, c, w)
     results_df = pd.DataFrame({'Weight': w, 'Feature': weight_names})
     return {
         'method': 'projected_conjugate_gradient',
@@ -157,6 +158,7 @@ def solve_with_conjugate_gradient(Q_solver: np.ndarray, c: np.ndarray, weight_na
         'max_f_w': -final_obj,
         'history': history
     }
+
 
 def plot_cg_convergence(history: List[Dict], weight_names: List[str]):
     """

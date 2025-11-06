@@ -46,7 +46,8 @@ import numpy as np
 import pandas as pd
 import time
 import matplotlib.pyplot as plt
-from typing import List, Dict, Tuple
+from typing import List, Dict
+from utility.utility import calculate_obj_function
 
 def solve_with_ipm(Q_solver: np.ndarray, c: np.ndarray, weight_names: List[str], max_iter: int = 100, tolerance: float = 1e-9) -> Dict:
     """
@@ -82,11 +83,11 @@ def solve_with_ipm(Q_solver: np.ndarray, c: np.ndarray, weight_names: List[str],
     print("Goal: Minimize g(w) = 1/2 w^T Q w - c^T w, subject to Simplex Constraints")
     print("="*80)
     print(f"--- Initial Setup ---")
-    print(f"  > Initial Objective (Min g(w)): {0.5 * w.T @ Q_solver @ w - c.T @ w:.6f}")
+    print(f"  > Initial Objective (Min g(w)): {calculate_obj_function(Q_solver, c, w):.6f}")
     print(f"  > Initial Weights: {', '.join([f'{name}: {w_val:.4f}' for name, w_val in zip(weight_names, w)])}")
     history.append({
         'iteration': 0,
-        'objective_value': 0.5 * w.T @ Q_solver @ w - c.T @ w,
+        'objective_value': calculate_obj_function(Q_solver, c, w),
         'duality_gap': np.dot(w, z) / K, # Total gap
         'weights': w.copy()
     })
@@ -97,7 +98,7 @@ def solve_with_ipm(Q_solver: np.ndarray, c: np.ndarray, weight_names: List[str],
         r_dual = Q_solver @ w - c + A.T @ y - z
         r_primal = A @ w - b
         
-        obj_val = 0.5 * w.T @ Q_solver @ w - c.T @ w
+        obj_val = calculate_obj_function(Q_solver, c, w)
         history.append({
             'iteration': iteration + 1,
             'objective_value': obj_val,
