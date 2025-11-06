@@ -26,7 +26,7 @@ def transform_data(raw_data_df: pd.DataFrame, lambda_1: float = 1.0, lambda_2: f
         print("Error: Input DataFrame is empty.")
         return {}
 
-    print(f"Raw data received. Shape: {raw_data_df.shape}")
+    # print(f"Raw data received. Shape: {raw_data_df.shape}")
 
     # --- Step 1: Pivoting Raw Event Log Data ---
     # Convert the long (sparse) event data into a wide User-Item-Feature matrix.
@@ -41,7 +41,7 @@ def transform_data(raw_data_df: pd.DataFrame, lambda_1: float = 1.0, lambda_2: f
     weight_names = wide_df.columns.tolist()
     K = len(weight_names)
     M = wide_df.shape[0] # Total number of unique user-item interactions
-    print(f"Transformed to wide format. {M} User-Item pairs, {K} features: {weight_names}")
+    # print(f"Transformed to wide format. {M} User-Item pairs, {K} features: {weight_names}")
     
     # --- Step 2: Log-Transformation (e_ij^k = log(1 + E_ij^k)) ---
     # A is the matrix of transformed interaction counts for all (User, Item) pairs
@@ -100,12 +100,12 @@ if __name__ == '__main__':
     }
     raw_df = pd.DataFrame(sample_data).sample(frac=1.0, random_state=42).reset_index(drop=True)
 
-    print("--- Running Data Processing on Sample Data (New Long Format) ---")
+    # print("--- Running Data Processing on Sample Data (New Long Format) ---")
     data_for_qp = transform_data(raw_df)
 
-    if data_for_qp:
-        print("\n--- Data Summary for QP Solver ---")
-        print(f"Number of Weights (K): {data_for_qp['weights_count']}")
-        print(f"Weight Names (Event Types): {data_for_qp['weight_names']}")
-        print("\nShape of Raw Interaction Matrix (E - M x K):", data_for_qp['E'].shape)
-        print("Shape of Transformed Interaction Matrix (A - M x K):", data_for_qp['A'].shape)
+    # if data_for_qp:
+    #     print("\n--- Data Summary for QP Solver ---")
+    #     print(f"Number of Weights (K): {data_for_qp['weights_count']}")
+    #     print(f"Weight Names (Event Types): {data_for_qp['weight_names']}")
+    #     print("\nShape of Raw Interaction Matrix (E - M x K):", data_for_qp['E'].shape)
+    #     print("Shape of Transformed Interaction Matrix (A - M x K):", data_for_qp['A'].shape)

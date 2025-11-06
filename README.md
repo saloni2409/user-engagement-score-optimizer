@@ -4,7 +4,46 @@
 
 ## Repository Structure
 
-
+```
+/Users/saloni/GIT/user-engagement-score-optimizer/
+├───.gitignore
+├───README.md
+├───requirements.txt
+├───setup.md
+├───setup.py
+├───user-engagement-score-optimizer.code-workspace
+├───.git/...
+├───.github/
+│   └───workflows/
+│       └───ci.yml
+├───.venv/
+│   ├───bin/...
+│   ├───etc/...
+│   ├───include/...
+│   ├───lib/...
+│   └───share/...
+├───data/
+│   ├───BalancedE-CommerceData.csv
+│   ├───breuninger_user_product_event_counts_000000000000
+│   └───user_product_interactions.csv
+├───docs/
+│   └───ProblemStatement.pdf
+├───src/
+│   ├───main.ipynb
+│   ├───__pycache__/
+│   ├───optimizers/
+│   │   ├───basic.py
+│   │   ├───newtons_method.py
+│   │   ├───qp_solver.py
+│   │   └───__pycache__/
+│   └───utility/
+│       ├───data_loader.py
+│       ├───data_transformer.py
+│       ├───wt_comparision.py
+│       └───__pycache__/
+└───tests/
+    └───optimizer.ipynb
+```
 
 ## Techniques Overview
 

@@ -115,7 +115,16 @@ def solve_with_projected_newtons_method(Q_solver: np.ndarray, c: np.ndarray, wei
     print(f"Projected Newton's Method Execution (K={K} Features)")
     print("Goal: Minimize g(w) = 1/2 w^T Q w - c^T w, subject to Simplex Constraints")
     print("="*80)
-    
+    print(f"--- Initial Setup ---")
+    print(f"  > Initial Objective (Min g(w)): {objective(w).item():.6f}")
+    print(f"  > Initial Weights: {', '.join([f'{name}: {w_val:.4f}' for name, w_val in zip(weight_names, w)])}")
+    history.append({
+        'iteration':  0,
+        'objective_value': objective(w).item(),
+        'step_change': 0,
+        'weights': w.copy()
+    })
+
     # Add stabilization to Q for inversion (ensures non-singularity)
     Q_stable = Q_solver + np.eye(K) * 1e-8
     

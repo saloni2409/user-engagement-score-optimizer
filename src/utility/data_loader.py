@@ -15,8 +15,8 @@ def load_parquet_data(file_path: str, engine: str = 'auto') -> Optional[pd.DataF
     try:
         # pandas automatically detects columns, types, and the best engine
         df = pd.read_parquet(file_path, engine=engine)
-        print(f"✅ Successfully loaded data from: {file_path}")
-        print(f"Shape: {df.shape}")
+        # print(f"✅ Successfully loaded data from: {file_path}")
+        # print(f"Shape: {df.shape}")
         return df
     except FileNotFoundError:
         print(f"❌ Error: File not found at {file_path}")
