@@ -4,6 +4,8 @@ import time
 import matplotlib.pyplot as plt # New import for plotting
 from typing import List, Dict
 
+from utility.utility import calculate_obj_function
+
 # # --- Helper Function: Data Simulation and Transformation ---
 
 # def simulate_and_transform_data(raw_data_df: pd.DataFrame, lambda_1: float, lambda_2: float) -> Tuple[np.ndarray, np.ndarray, List[str]]:
@@ -116,11 +118,11 @@ def solve_with_projected_newtons_method(Q_solver: np.ndarray, c: np.ndarray, wei
     print("Goal: Minimize g(w) = 1/2 w^T Q w - c^T w, subject to Simplex Constraints")
     print("="*80)
     print(f"--- Initial Setup ---")
-    print(f"  > Initial Objective (Min g(w)): {objective(w).item():.6f}")
+    print(f"  > Initial Objective (Min g(w)): {calculate_obj_function(Q_solver=Q_solver, c=c, w=w):.6f}")
     print(f"  > Initial Weights: {', '.join([f'{name}: {w_val:.4f}' for name, w_val in zip(weight_names, w)])}")
     history.append({
         'iteration':  0,
-        'objective_value': objective(w).item(),
+        'objective_value': calculate_obj_function(Q_solver=Q_solver, c=c, w=w),
         'step_change': 0,
         'weights': w.copy()
     })
@@ -156,8 +158,8 @@ def solve_with_projected_newtons_method(Q_solver: np.ndarray, c: np.ndarray, wei
         w = w_next
         
         # Calculate objective value for logging
-        obj_val = objective(w).item()
-        
+        obj_val = calculate_obj_function(Q_solver=Q_solver, c=c, w=w)
+
         # --- Logging Iteration History ---
         history.append({
             'iteration': iteration + 1,
@@ -189,7 +191,7 @@ def solve_with_projected_newtons_method(Q_solver: np.ndarray, c: np.ndarray, wei
         'weights_df': results_df,
         'w_star': w,
         'status': 'Optimal (Newton)',
-        'max_f_w': -objective(w).item(), # Maximize negative objective
+        'max_f_w': -calculate_obj_function(Q_solver=Q_solver, c=c, w=w), # Maximize negative objective
         'history': history # Return the history for plotting
     }
 
@@ -229,7 +231,7 @@ def plot_convergence(history: List[Dict], weight_names: List[str]):
     axes[1].legend(loc='best', fontsize='small')
     axes[1].grid(True, linestyle='--', alpha=0.6)
     
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.tight_layout(rect=(0, 0.03, 1, 0.95))
     plt.show()
 
 """ 
