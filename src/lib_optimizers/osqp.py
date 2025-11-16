@@ -172,7 +172,7 @@ def minimizeUsingOsQP(Q_matrix: np.ndarray,
     print(f"OSQP Status: {results.info.status}")
     maximized_objective_value = -min_objective_value_osqp
     return {
-        'method': 'QP Solver (OSQP)',
+        'method': 'Dual Ascent (ADMM)',
         'weights_df': pd.DataFrame(weights_output, columns=['Weight_Name', 'Optimal_Weight']),
         'w_star': w_osqp,
         'status': results.info.status,

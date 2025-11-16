@@ -223,7 +223,7 @@ def solve_with_ipm_complete(Q_solver: np.ndarray, c: np.ndarray, weight_names: L
             'Optimal_Weight': w
         })
     return {
-        'method': 'interior_point_method_with_hirarchy',
+        'method': 'interior_point_method',
         'weights_df': results_df,
         'w_star': w,
         'status': 'Converged' if duality_gap < tolerance else 'Max Iterations Reached',
